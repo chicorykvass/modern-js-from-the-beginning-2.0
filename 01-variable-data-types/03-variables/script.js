@@ -41,3 +41,22 @@ console.log(arr);
 arr[0] = 7;
 
 console.log(arr);
+
+const person = {
+  name: 'John',
+};
+
+person.name = 'James';
+
+person.email = 'james@gmail.com';
+
+console.table(person);
+
+// Declare multiple values at once
+let a, b, c;
+const d = 10,
+  e = 20,
+  f = 30;
+
+console.log(d);
+console.log(a);
