@@ -1,0 +1,6 @@
+{
+  "plugins": ["@awmottaz/prettier-plugin-void-html"],
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5"
+}
