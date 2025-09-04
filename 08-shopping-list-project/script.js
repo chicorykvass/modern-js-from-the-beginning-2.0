@@ -31,6 +31,12 @@ function addItem(e) {
   checkUI();
 }
 
+function createWithClasses(type, classes = '') {
+  const element = document.createElement(type);
+  if (classes) element.className = classes;
+  return element;
+}
+
 function removeItem(e) {
   const parent = e.target.parentElement;
 
@@ -74,15 +80,20 @@ function checkUI() {
   }
 }
 
-function createWithClasses(type, classes = '') {
-  const element = document.createElement(type);
-  if (classes) element.className = classes;
-  return element;
+function filterItems(e) {
+  for (const item of itemList.children) {
+    if (item.innerText.toLowerCase().match(e.target.value.toLowerCase())) {
+      unHideElement(item);
+    } else {
+      hideElement(item);
+    }
+  }
 }
 
 // Event Listeners
 itemForm.addEventListener('submit', addItem);
 itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', clearAll);
+itemFilter.addEventListener('input', filterItems);
 
 checkUI();
