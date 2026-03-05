@@ -4,7 +4,7 @@ const itemList = document.querySelector('#item-list');
 const clearBtn = document.querySelector('#clear');
 const itemFilter = document.querySelector('.filter');
 
-function addItem(e) {
+function onAddItemSubmit(e) {
   e.preventDefault();
 
   const newItem = itemInput.value;
@@ -15,20 +15,34 @@ function addItem(e) {
     return;
   }
 
+  addItemToStorage(newItem);
+
+  itemInput.value = '';
+
+  refreshUI();
+}
+
+function addItemToDOM(item) {
   // Create list item
   const li = document.createElement('li');
   const button = createWithClasses('button', 'remove-item btn-link text-red');
   const icon = createWithClasses('i', 'fa-solid fa-xmark');
 
-  li.appendChild(document.createTextNode(newItem));
+  li.appendChild(document.createTextNode(item));
   button.appendChild(icon);
   li.appendChild(button);
 
   itemList.appendChild(li);
+}
 
-  itemInput.value = '';
+function getItemsFromStorage() {
+  return localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+}
 
-  refreshUI();
+function addItemToStorage(item) {
+  let itemsFromStorage = getItemsFromStorage();
+  itemsFromStorage.push(item);
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 function createWithClasses(type, classes = '') {
@@ -39,9 +53,9 @@ function createWithClasses(type, classes = '') {
 
 function removeItem(e) {
   const parent = e.target.parentElement;
-
   if (parent.classList.contains('remove-item') && confirm('Are you sure?')) {
-    parent.parentElement.remove();
+    const itemsFromStorage = getItemsFromStorage();
+    localStorage.setItem('items', JSON.stringify(itemsFromStorage.filter(item => item !== parent.parentElement.textContent)));
 
     refreshUI();
   }
@@ -52,9 +66,7 @@ function clearAll() {
   // for (const item of items) item.remove();
 
   if (confirm('Are you sure?')) {
-    while (itemList.firstChild) {
-      itemList.firstChild.remove();
-    }
+    localStorage.setItem('items', '');
 
     refreshUI();
   }
@@ -69,7 +81,15 @@ function unHideElement(element) {
 }
 
 function refreshUI() {
-  const items = itemList.querySelectorAll('li');
+  const items = getItemsFromStorage();
+
+  while (itemList.firstChild) {
+    itemList.firstChild.remove();
+  }
+
+  items.forEach(item => {
+    addItemToDOM(item);
+  });
 
   if (items.length) {
     unHideElement(clearBtn);
@@ -91,7 +111,7 @@ function filterItems(e) {
 }
 
 // Event Listeners
-itemForm.addEventListener('submit', addItem);
+itemForm.addEventListener('submit', onAddItemSubmit);
 itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', clearAll);
 itemFilter.addEventListener('input', filterItems);
