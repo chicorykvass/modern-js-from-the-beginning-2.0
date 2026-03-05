@@ -28,7 +28,7 @@ function addItem(e) {
 
   itemInput.value = '';
 
-  refreshPage();
+  refreshUI();
 }
 
 function createWithClasses(type, classes = '') {
@@ -43,7 +43,7 @@ function removeItem(e) {
   if (parent.classList.contains('remove-item') && confirm('Are you sure?')) {
     parent.parentElement.remove();
 
-    refreshPage();
+    refreshUI();
   }
 }
 
@@ -56,7 +56,7 @@ function clearAll() {
       itemList.firstChild.remove();
     }
 
-    refreshPage();
+    refreshUI();
   }
 }
 
@@ -68,7 +68,7 @@ function unHideElement(element) {
   if (element.classList.contains('hidden')) element.classList.remove('hidden');
 }
 
-function refreshPage() {
+function refreshUI() {
   const items = itemList.querySelectorAll('li');
 
   if (items.length) {
@@ -96,4 +96,4 @@ itemList.addEventListener('click', removeItem);
 clearBtn.addEventListener('click', clearAll);
 itemFilter.addEventListener('input', filterItems);
 
-refreshPage();
+refreshUI();
