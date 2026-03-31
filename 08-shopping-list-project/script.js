@@ -37,7 +37,8 @@ function addItemToDOM(item) {
 }
 
 function getItemsFromStorage() {
-  return localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+  const items = localStorage.getItem('items');
+  return items ? JSON.parse(items) : [];
 }
 
 function addItemToStorage(item) {
